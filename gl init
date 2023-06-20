@@ -1,0 +1,57 @@
+Documentation
+Interface
+gl init - create an empty repo or create one from an existing remote repo
+gl status - show status of the repo
+gl track - start tracking changes to files
+gl untrack - stop tracking changes to files
+gl diff - show changes to files
+gl commit - record changes in the local repo
+gl checkout - checkout committed versions of files
+gl history - show commit history
+gl branch - list, create, edit or delete branches
+gl switch - switch branches
+gl tag - list, create, or delete tags
+gl merge - merge the divergent changes of one branch onto another
+gl fuse - fuse the divergent changes of one branch onto another
+gl resolve - mark files with conflicts as resolved
+gl publish - publish commits upstream
+gl remote - list, create, edit or delete remotes
+Guide
+creating a repository | saving changes | branching | tagging | working with remote repositories
+
+Creating a Repository
+Say you are in directory foo and you want turn it into a repository. You do this with the gl init command. This transforms the current working directory into an empty repository and you are now ready to start saving changes to files in foo:
+$ mkdir foo
+$ cd foo/
+$ gl init
+✔ Local repo created in /MyFiles/foo
+most cases, instead of starting with an empty repository, there's already some existing remote repository you want to work on. To clone a remote repository, you pass the URL of the repository to the same gl init command, as shown below (note that you'll have to replace https://github.com/gitless-vcs/try-gitless with the URL of your repo):
+
+$ mkdir try-gitless
+$ cd try-gitless/
+$ gl init https://github.com/gitless-vcs/try-gitless
+✔ Local repo created in /MyFiles/try-gitless
+✔ Initialized from remote https://github.com/gitless-vcs/try-gitless
+If you don't have a remote repository yet, you can follow these instructions to create one on GitHub.
+Saving Changes
+Now that you have your local repository, it's time to start saving changes to files. A file in Gitless can be tracked, untracked or ignored. A tracked file is a file whose changes Gitless will detect. Tracked files are automatically considered for commit if they are modified and appear listed under the "Tracked files with modifications" section of status. Conversely, an untracked file is a file whose changes Gitless will not detect. These are not automatically considered for commit and appear listed under the "Untracked files" section of status. Finally, an ignored file is a file that is completely ignored by Gitless and it won't even appear in the output of status.
+
+An example output of the gl status command (foo.py and bar.py are tracked files with modifications, .gitignore is an unmodified tracked file, baz.py is an untracked file and foo.pyc is an ignored file):
+$ ls
+bar.py  baz.py  foo.py  foo.pyc .gitignore
+$ gl status
+On branch master, repo-directory //
+
+Tracked files with modifications:
+  ➜ these will be automatically considered for commit
+  ➜ use gl untrack <f> if you don't want to track changes to file f
+  ➜ if file f was committed before, use gl checkout <f> to discard local changes
+
+    foo.py
+    bar.py
+
+Untracked files:
+  ➜ these won't be considered for commit)
+  ➜ use gl track <f> if you want to track changes to file f
+
+    baz.py
